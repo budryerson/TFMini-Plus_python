@@ -1,13 +1,13 @@
 '''=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-* File Name: TFMPlus_h.py
-* Version: 0.0.1
-* Described: A Python definitions module for the
+# File Name: TFMPlus_h.py
+# Version: 0.0.1
+# Described: A Python definitions module for the
              'TMMPlus.py' module in support of the
              Benewake TFMini-Plus Lidar sensor.
-* Developer: Bud Ryerson
-* Inception: v0.0.1 - 13 MAR 2021
-* Last work: 18 MAR 2021
-*
+# Developer: Bud Ryerson
+# Inception: v0.0.1 - 13 MAR 2021
+# Last work: 18 MAR 2021
+#
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'''
 
 # Buffer sizes

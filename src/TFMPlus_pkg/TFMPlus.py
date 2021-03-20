@@ -1,36 +1,36 @@
 '''=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- # Filename: TFMPlus.py
- # Inception: 10 MAR 2021
- # Described: Python module for the Benewake TFMini-Plus Lidar sensor
- #            The TFMini-Plus is a unique product, and the various
- #            TFMini Libraries are not compatible with the Plus.
- # Developer: Bud Ryerson
- # Version:   0.0.1 10MAR21
- #
- # Default settings for the TFMini-Plus are a 115200 serial baud rate
- # and a 100Hz measurement frame rate. The device will begin returning
- # measurement data immediately on power up.
- #
- # 'begin()' function passes a serial stream to library and
- #  returns TRUE/FALSE whether serial data is available.
- #  Function also sets a public one byte status code.
- #  Status codes are defined within the library.
- #
- # 'getData( dist, flux, temp)' passes back measurement data
- #  • dist = distance in centimeters,
- #  • flux = signal strength in arbitrary units, and
- #  • temp = an encoded number in degrees centigrade
- #  Function returns TRUE/FALSE whether completed without error.
- #  Error, if any, is saved as a one byte 'status' code.
- #
- # 'sendCommand( cmnd, param)' sends a 32bit command code (cmnd)
- #  and a 32bit parameter value (param). Returns TRUE/FALSE and
- #  sets a one byte status code.
- #  Commands are selected from the library's list of defined commands.
- #  Parameter values can be entered directly (115200, 250, etc) but
- #  for safety, they should be chosen from the Library's defined lists.
- #  An incorrect value can render the device uncommunicative.
- #
+# Filename: TFMPlus.py
+# Inception: 10 MAR 2021
+# Described: Python module for the Benewake TFMini-Plus Lidar sensor
+#            The TFMini-Plus is a unique product, and the various
+#            TFMini Libraries are not compatible with the Plus.
+# Developer: Bud Ryerson
+# Version:   0.0.1 10MAR21
+#
+# Default settings for the TFMini-Plus are a 115200 serial baud rate
+# and a 100Hz measurement frame rate. The device will begin returning
+# measurement data immediately on power up.
+#
+# 'begin()' function passes a serial stream to library and
+#  returns TRUE/FALSE whether serial data is available.
+#  Function also sets a public one byte status code.
+#  Status codes are defined within the library.
+#
+# 'getData( dist, flux, temp)' passes back measurement data
+#  • dist = distance in centimeters,
+#  • flux = signal strength in arbitrary units, and
+#  • temp = an encoded number in degrees centigrade
+#  Function returns TRUE/FALSE whether completed without error.
+#  Error, if any, is saved as a one byte 'status' code.
+#
+# 'sendCommand( cmnd, param)' sends a 32bit command code (cmnd)
+#  and a 32bit parameter value (param). Returns TRUE/FALSE and
+#  sets a one byte status code.
+#  Commands are selected from the library's list of defined commands.
+#  Parameter values can be entered directly (115200, 250, etc) but
+#  for safety, they should be chosen from the Library's defined lists.
+#  An incorrect value can render the device uncommunicative.
+#
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'''
 
 import time
@@ -61,7 +61,7 @@ def begin( port, rate):
 #  and set system status to provide more information.
 def getData():
     ''' Get serial frame data from device'''
-    
+
     # make data variables global
     global status, dist, flux, temp
 
@@ -156,7 +156,7 @@ def sendCommand( cmnd, param):
         cmndData[3:3] = param.to_bytes( 3, byteorder = 'little')     #  add the 3 byte BaudRate parameter.
 
     cmndData = cmndData[0:cmndLen]  # re-establish command data length
-    
+
     #  Create a checksum byte for the command data array.
     chkSum = 0
     #  Add together all bytes but the last.
@@ -164,63 +164,61 @@ def sendCommand( cmnd, param):
         chkSum += cmndData[ i]
     #  and save it as the last byte of command data.
     cmndData[ cmndLen - 1] = ( chkSum & 0xFF)
-    
+
     #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  Step 2 - Send the command data array to the device
     #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     pStream.reset_input_buffer()    #  flush input buffer
     pStream.reset_output_buffer()   #  flush output buffer
     pStream.write( cmndData)        #  send command data
-        
-    #  + + + + + + + + + + + + + + + + + + + + + + + + +
-    #  If the command does not expect a reply, then we're
-    #  finished here. Go home.
+
+    # + + + + + + + + + + + + + + + + + + + + + + + + +
+    # If the command does not expect a reply,
+    # then we're finished here. Go home.
     if( replyLen == 0):
         return True
-    #  + + + + + + + + + + + + + + + + + + + + + + + + +
+    # + + + + + + + + + + + + + + + + + + + + + + + + +
 
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Step 3 - Get command reply data back from the device.
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Set a one second timer to timeout if HEADER never appears
-    #  or serial data never becomes available
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Step 3 - Get command reply data back from the device.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Set a one second timer for HEADER combo to appear
     serialTimeout = time.time() + 1000
-    #  Establish 'reply' bytearray and fill with zeros
+    # Establish 'reply' bytearray and fill with zeros
     reply = bytearray( replyLen)
-    
-    #  1) Read one byte from serial buffer
-    #  2) Append byte to end of 'reply'
-    #  3) Left shift entire array by one byte.
-    #  4) Repeat until 'HEADER' and 'replyLen'
-    #     appear as first two bytes in array.
+    # 1) Read one byte from serial buffer
+    # 2) Append byte to end of 'reply'
+    # 3) Left shift entire array by one byte.
+    # 4) Repeat until HEADER code and 'replyLen'
+    #    appear as first two bytes in array.
     while( reply[ 0] != 0x5A) or (reply[ 1] != replyLen):
         if( pStream.inWaiting()):
-            #  Read 1 byte into the 'frame' plus one position.
+            # Read 1 byte into the 'frame' plus one position.
             reply.append( pStream.read()[0])
-            #  Shift entire length of 'frame' one byte left.
+            # Shift entire length of 'frame' one byte left.
             reply = reply[ 1:]
-        #  If HEADER/replyLen combo does do not
-        #  appear after more than one second...
+        # If HEADER/replyLen combo does do not
+        # appear after more than one second...
         if( time.time() >  serialTimeout):
             status = TFMP_HEADER   #  ...then set error type
             return False           # and return 'False'.
 
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Step 4 - Perform a checksum test.
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Clear the 'chkSum' variable declared in 'TFMPlus.h'
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Step 4 - Perform a checksum test.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Clear the 'chkSum' variable declared in 'TFMPlus.h'
     chkSum = 0
-    #  Add together all bytes but the last.
+    # Add together all bytes but the last.
     for i in range( replyLen -1):
         chkSum += reply[ i]
-    #  If the low order byte does not equal the last byte...
+    # If the low order byte does not equal the last byte...
     if( ( chkSum & 0xFF) != reply[ replyLen - 1]):
       status = TFMP_CHECKSUM  #  ...then set error
       return False            #  and return 'False.'
 
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Step 5 - Interpret different command responses.
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Step 5 - Interpret different command responses.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if( cmnd == OBTAIN_FIRMWARE_VERSION):
         version[ 0] = reply[ 5]  #  set firmware version.
         version[ 1] = reply[ 4]
@@ -233,24 +231,24 @@ def sendCommand( cmnd, param):
                 status = TFMP_FAIL  #  then set status to 'FAIL'...
                 return False        #  and return 'False'.
 
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    #  Step 6 - Set status to 'READY' and return 'True'
-    #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    status = TFMP_READY
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    # Step 6 - Set status to 'READY' and return 'True'
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    satus = TFMP_READY
     return True
 
-#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  - - - - -    The following is for testing purposes    - - - -
-#  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - -    The following is for testing purposes    - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#============   For troubleshooting  ========
+# ============   For troubleshooting  ========
 # for i in range( len(cmndData)):
 #     print( f" {cmndData[i]:0{2}X}", end='')
 # print()
-#===============================================
+# ============================================
 
-#  Called by either 'printFrame()' or 'printReply()'
-#  Print status condition either 'READY' or error type
+# Called by either 'printFrame()' or 'printReply()'
+# Print status condition either 'READY' or error type
 def printStatus():
     ''' Print staus condition'''
     print("Status: ", end= '')
@@ -270,30 +268,30 @@ def printStatus():
     else:                            print( "OTHER", end= '')
     print()
 
-#  Print error type and HEX values
-#  of each byte in the data frame
+# Print error type and HEX values
+# of each byte in the data frame
 def printFrame():
     '''Print status and frame data'''
     printStatus();
     print("Data:", end= '')  # no carriage return
     for i in range( TFMP_FRAME_SIZE):
-        #  >>> f"{value:#0{padding}X}"
+        # >>> f"{value:#0{padding}X}"
         # Pad hex number with 0s to length of n characters
         print(f" {frame[ i]:0{2}X}", end='')
     print()
-    
-#  Print error type and HEX values of
-#  each byte in the command response frame.
+
+# Print error type and HEX values of
+# each byte in the command response frame.
 def printReply():
     '''Print status and reply data'''
     printStatus()
     #  Print the Hex value of each byte
     for i in range( TFMP_REPLY_SIZE):
-        print(f" {reply[ i]:0{2}X}", end='')    
+        print(f" {reply[ i]:0{2}X}", end='')
     print()
 
-# If this module is executed by itself
+# If this module is executed by itself...
 if __name__ == "__main__":
     print( "This Python module supports the" +\
            " Benewake TFMini-Plus Lidar device")
-        
+
