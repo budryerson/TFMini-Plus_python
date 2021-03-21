@@ -22,10 +22,12 @@ The default TFMini-Plus communication interface is UART (serial); the default ba
 This module supports **only** the default, UART (serial) communication interface.  For communication in I2C mode, please install and import the TFMini-Plus-I2C module, `TFMPI2C`.  Read more below about using the I2C mode of the device.
 <hr />
 
-### Python module Commands
-`begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.  Status codes are defined in the module's header `_h.py` file.
+### Three module functions
+The three module functions are defined in the main module file, `TFMPlus.py`.  Status code, command and parameter variables are declared in the extension file, `TFMPlus_h.py`.
 
-The `getData()` function reads a serial data frame from the device and extracts the three measuremnent data values.  It sets the `status` error code byte and returns a boolean value indicating 'pass/fail'.  If no serial data is received or no header sequence \[`0x5959`\] is detected within one (1) second, the function sets an appropriate `status` error code and 'fails'.  Given the asynchronous nature of the device, the serial buffer is flushed before reading and the `frame` and `reply` data arrays are zeroed out to delete any residual data.  This helps with valid data recognition and error discrimination.
+`begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.
+
+`getData()` reads a serial data frame from the device and extracts the three measuremnent data values.  It sets the `status` error code byte and returns a boolean value indicating 'pass/fail'.  If no serial data is received or no header sequence \[`0x5959`\] is detected within one (1) second, the function sets an appropriate `status` error code and 'fails'.  Given the asynchronous nature of the device, the serial buffer is flushed before reading and the `frame` and `reply` data arrays are zeroed out to delete any residual data.  This helps with valid data recognition and error discrimination.
 
 `sendCommand( cmnd, param)` sends a coded command and a coded parameter to the device.  It sets the `status` error code byte and returns a boolean 'pass/fail' value.  A proper command (`cmnd`) must be selected from the module's list of twenty defined commands.  A parameter (`param`) may be entered directly as an unsigned number, but it is better to choose from the module's defined parameters because **an erroneous parameter can block communication and there is no external means of resetting the device to factory defaults.**
 
