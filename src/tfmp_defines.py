@@ -1,12 +1,12 @@
 '''=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# File Name: TFMPlus_h.py
+# File Name: tfmp_defines.py
 # Inception: 13 MAR 2021
 # Described: A Python definitions module for the
              'TMMPlus.py' module in support of the
              Benewake TFMini-Plus Lidar sensor.
 # Developer: Bud Ryerson
 # Version:   0.0.1
-# Last work: 30 MAR 2021
+# Last work: 31 MAR 2021
 #
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'''
 
@@ -89,21 +89,7 @@ I2C_FORMAT_MM             = 0x06000500   #           "
 #SET_IO_MODE_LOHI         = 0x023B0900   # I/O, near low and far high
 # *  *  *  This library does not support the I/O Mode interface  *  *  *
 
-'''
-# dictionary of UART serial baud rate
-# parameters expressed in hexidecimal
-dpb = {
-    BAUD_9600   : 0x002580,
-    BAUD_14400  : 0x003840,
-    BAUD_19200  : 0x004B00,
-    BAUD_56000  : 0x00DAC0,
-    BAUD_115200 : 0x01C200,
-    BAUD_460800 : 0x070800,
-    BAUD_921600 : 0x0E1000
-}
-'''
-
-# Command Parameters
+# Send Command Parameters (param)
 BAUD_9600          = 0x002580   # UART serial baud rate
 BAUD_14400         = 0x003840   # expressed in hexidecimal
 BAUD_19200         = 0x004B00
