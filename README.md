@@ -19,11 +19,11 @@ Three measurement values are returned by the device:
 
 The default TFMini-Plus communication interface is UART (serial); the default baud-rate is 115200 and the default data frame-rate is 100Hz.  Upon power-up in serial mode, the device will immediately start sending asynchronous frames of measurement data at the frame-rate.
 
-This module supports **only** the default, UART (serial) communication interface.  For communication in I2C mode, please install and import the TFMini-Plus-I2C module, `TFMPI2C`.  Read more below about using the I2C mode of the device.
+This module supports **only** the default, UART (serial) communication interface.  For communication in I2C mode, please install and import the TFMini-Plus-I2C_python module, `tfmpi2c`.  Read more below about using the I2C mode of the device.
 <hr />
 
 ### Three basic `tfmplus` module functions
-The three basic module functions are defined in the `tfmplus_main.py` module file, `TFMPlus.py`.  Status codes, commands and parameters are declared in the extension file, `tfmplus_defines.py`.
+The three basic module functions are defined in the `tfmp_main.py` module file, `TFMPlus.py`.  Status codes, commands and parameters are declared in the extension file, `tfmp_defines.py`.
 
 `begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.
 
