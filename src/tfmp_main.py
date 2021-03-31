@@ -1,12 +1,12 @@
 '''=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- # Filename:  TFMPlus.py
+ # Filename:  tfmplus_main.py
  # Inception: 10 MAR 2021
  # Described: Python module for the Benewake TFMini-Plus Lidar sensor
  #            The TFMini-Plus is a unique product, and the various
  #            TFMini Libraries are not compatible with the Plus.
  # Developer: Bud Ryerson
  # Version:   0.0.1
- # Last work: 30 MAR 2021
+ # Last work: 31 MAR 2021
  #
  # Default settings for the TFMini-Plus are a 115200 serial baud rate
  # and a 100Hz measurement frame rate. The device will begin returning
