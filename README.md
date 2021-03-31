@@ -22,8 +22,8 @@ The default TFMini-Plus communication interface is UART (serial); the default ba
 This module supports **only** the default, UART (serial) communication interface.  For communication in I2C mode, please install and import the TFMini-Plus-I2C module, `TFMPI2C`.  Read more below about using the I2C mode of the device.
 <hr />
 
-### Three module functions
-The three module functions are defined in the main module file, `TFMPlus.py`.  Status code, command and parameter variables are declared in the extension file, `TFMPlus_h.py`.
+### Three basic `tfmplus` module functions
+The three basic module functions are defined in the `tfmplus_main.py` module file, `TFMPlus.py`.  Status codes, commands and parameters are declared in the extension file, `tfmplus_defines.py`.
 
 `begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.
 
@@ -37,7 +37,7 @@ Benewake is not forthcoming about the internals of the device, however they did 
 >Some commands that modify internal parameters are processed within 1ms.  Some commands require the MCU to communicate with other chips may take several ms.  And some commands, such as saving configuration and restoring the factory need to erase the FLASH of the MCU, which may take several hundred ms.
 
 Also included:
-<br />&nbsp;&nbsp;&#9679;&nbsp; A python script "TFMP_example.py" is in `tests`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; A python script "tfmplus_example.py" is in `tests`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Datasheet and Product Manual are in `docs`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas   Instruments OPT3101 module in particular are also in `docs`.
 
