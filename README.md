@@ -23,13 +23,13 @@ This module supports **only** the default, UART (serial) communication interface
 <hr />
 
 ### Three basic `tfmplus` module functions
-The three basic module functions are defined in the `tfmp_main.py` module file, `TFMPlus.py`.  Status codes, commands and parameters are declared in the extension file, `tfmp_defines.py`.
+The three basic module functions are defined in the file, `tfmp_main.py`.  Status codes, commands and parameters are defined in the file, `tfmp_defines.py`.
 
 `begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.
 
 `getData()` reads a serial data frame from the device and extracts the three measuremnent data values.  It sets the `status` error code byte and returns a boolean value indicating 'pass/fail'.  If no serial data is received or no header sequence \[`0x5959`\] is detected within one (1) second, the function sets an appropriate `status` error code and 'fails'.  Given the asynchronous nature of the device, the serial buffer is flushed before reading and the `frame` and `reply` data arrays are zeroed out to delete any residual data.  This helps with valid data recognition and error discrimination.
 
-`sendCommand( cmnd, param)` sends a coded command and a coded parameter to the device.  It sets the `status` error code byte and returns a boolean 'pass/fail' value.  A proper command (`cmnd`) must be selected from the module's list of twenty defined commands.  A parameter (`param`) may be entered directly as an unsigned number, but it is better to choose from the module's defined parameters because **an erroneous parameter can block communication and there is no external means of resetting the device to factory defaults.**
+`sendCommand( cmnd, param)` sends a coded command and a coded parameter to the device.  It sets the `status` error code byte and returns a boolean 'Pass/Fail' value.  A proper command (`cmnd`) must be selected from the module's list of twenty defined commands.  A parameter (`param`) may be entered directly as an unsigned number, but it is better to choose from the module's defined parameters because **an erroneous parameter can block communication and there is no external means of resetting the device to factory defaults.**
 
 Any change of device settings (i.e. frame-rate or baud-rate) must be followed by a `SAVE_SETTINGS` command or else the modified values may be lost when power is removed.  `SYSTEM_RESET` and `RESTORE_FACTORY_SETTINGS` do not require a `SAVE_SETTINGS` command.
 
@@ -37,7 +37,7 @@ Benewake is not forthcoming about the internals of the device, however they did 
 >Some commands that modify internal parameters are processed within 1ms.  Some commands require the MCU to communicate with other chips may take several ms.  And some commands, such as saving configuration and restoring the factory need to erase the FLASH of the MCU, which may take several hundred ms.
 
 Also included:
-<br />&nbsp;&nbsp;&#9679;&nbsp; A python script "tfmplus_example.py" is in `tests`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; A python script `tfmp_example.py` is in `tests`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Datasheet and Product Manual are in `docs`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas   Instruments OPT3101 module in particular are also in `docs`.
 
