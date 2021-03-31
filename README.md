@@ -1,5 +1,5 @@
 # TFMini-Plus_python
-### Python module for the Benewake TFMini-Plus Lidar sensor
+### Python module `tfmplus` for the Benewake TFMini-Plus Lidar sensor
 
 The **TFMini-S** is largely compatible with the **TFMini-Plus** and therefore able to use this module.  One difference is that upon command to change communication mode (`SET_I2C_MODE`, `SET_SERIAL_MODE`) the **TFMini-Plus** switches immediately, whereas the **TFMini-S** requires an additional `SAVE_SETTING` command.  This module is *not compatible* with the **TFMini**, which is an entirely different product with its own command and data structure.
 
