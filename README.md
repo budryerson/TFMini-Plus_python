@@ -23,11 +23,11 @@ This module supports **only** the default, UART (serial) communication interface
 <hr />
 
 ### Three basic `tfmplus` module functions
-The three basic module functions are defined in the file, `tfmp_main.py`.  Status codes, commands and parameters are defined in the file, `tfmp_defines.py`.
+The three basic functions, status codes, commands and parameters are all defined in the file, `tfmplus.py`.
 
-`begin( port, rate)` passes the serial port name and baud rate of the host device to the module and returns a boolean value indicating whether serial data is available. The function also sets a public one-byte `status` or error code.
+`begin( port, rate)` passes the host device serial port name and baud rate to the module.  It returns a boolean value indicating whether serial data is available in the serial buffer and also sets a `status` or error code for trouble shooting purposes.
 
-`getData()` reads a serial data frame from the device and extracts the three measuremnent data values.  It sets the `status` error code byte and returns a boolean value indicating 'pass/fail'.  If no serial data is received or no header sequence \[`0x5959`\] is detected within one (1) second, the function sets an appropriate `status` error code and 'fails'.  Given the asynchronous nature of the device, the serial buffer is flushed before reading and the `frame` and `reply` data arrays are zeroed out to delete any residual data.  This helps with valid data recognition and error discrimination.
+`getData()` reads a serial data frame from the device and extracts three measuremnent values from the frame.  It sets the `status` error code byte and returns a boolean value indicating 'pass/fail'.  If no serial data is received or no header sequence \[`0x5959`\] is detected within one (1) second, the function sets an appropriate `status` error code and 'fails'.  Given the asynchronous nature of the device, the serial buffer is flushed before reading and the `frame` and `reply` data arrays are zeroed out to delete any residual data.  This helps with valid frame recognition and error discrimination.
 
 `sendCommand( cmnd, param)` sends a coded command and a coded parameter to the device.  It sets the `status` error code byte and returns a boolean 'Pass/Fail' value.  A proper command (`cmnd`) must be selected from the module's list of twenty defined commands.  A parameter (`param`) may be entered directly as an unsigned number, but it is better to choose from the module's defined parameters because **an erroneous parameter can block communication and there is no external means of resetting the device to factory defaults.**
 
@@ -37,11 +37,11 @@ Benewake is not forthcoming about the internals of the device, however they did 
 >Some commands that modify internal parameters are processed within 1ms.  Some commands require the MCU to communicate with other chips may take several ms.  And some commands, such as saving configuration and restoring the factory need to erase the FLASH of the MCU, which may take several hundred ms.
 
 Also included:
-<br />&nbsp;&nbsp;&#9679;&nbsp; A python script `tfmp_example.py` is in `tests`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; A python script `tfmp_test.py` is in the `tests` folder.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Datasheet and Product Manual are in `docs`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas   Instruments OPT3101 module in particular are also in `docs`.
 
-All of the code for this module is richly commented to assist with understanding and in problem solving.
+All of the code for this module is richly commented to assist with understanding and problem solving.
 
 ### Using the I2C version of the device
 According to Benewake:
@@ -54,7 +54,7 @@ To configure the device for I2C communication, a command must be sent using the 
 
 The `SET_I2C_MODE` command does not require a subsequent `SAVE_SETTINGS` command.  The device will remain in I2C mode after power has been removed and restored.  The only way to return to serial mode is with the `SET_SERIAL_MODE` command.  Even a `RESTORE_FACTORY_SETTINGS` command will NOT restore the device to its default, UART communication interface mode.
 
-The device functions as an I2C slave device and the default address is `16` (`0x10` Hex) but is user-programable by sending the `SET_I2C_ADDRESS` command and a parameter in the range of `1` to `127`.  The new setting will take effect immediately and permanently without a `SAVE_SETTINGS` command, however the `RESTORE_FACTORY_SETTINGS` command will restore the default address.  The I2C address can be set while still in serial communication mode or, if in I2C mode, an example script included in the TFMini-Plus-I2C module can be used to test and change the address.
+The device functions as an I2C slave device and the default address is `16` (`0x10` Hex) but is user-programable by sending the `SET_I2C_ADDRESS` command and a parameter in the range of `1` to `127`.  The new setting will take effect immediately and permanently without a `SAVE_SETTINGS` command.  The `RESTORE_FACTORY_SETTINGS` command, however, will restore the default address.  The I2C address can be set while still in serial communication mode or, if in I2C mode, an example script included in the TFMini-Plus-I2C module can be used to test and change the address.
 
 ### Using the I/O modes of the device
 The so-called I/O modes are not supported in this module.  Please do not attempt to use any I/O commands that you may find to be defined in this module's header file.
