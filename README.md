@@ -37,11 +37,11 @@ Benewake is not forthcoming about the internals of the device, however they did 
 >Some commands that modify internal parameters are processed within 1ms.  Some commands require the MCU to communicate with other chips may take several ms.  And some commands, such as saving configuration and restoring the factory need to erase the FLASH of the MCU, which may take several hundred ms.
 
 Also included:
-<br />&nbsp;&nbsp;&#9679;&nbsp; A python script 'tfmp_test.py' is in `tests`.
-<br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Datasheet and Product Manual are in `docs`.
-<br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas   Instruments OPT3101 module in particular are also in `docs`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; Anm example python script, `tfmp_test.py` is in `src/tests`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Datasheet and Product Manual are in `src/docs`.
+<br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas Instruments OPT3101 module in particular are also in `src/docs`.
 
-All of the code for this module is richly commented to assist with understanding and in problem solving.
+All of the code in this module is richly commented to assist with understanding and in problem solving.
 
 ### Using the I2C version of the device
 According to Benewake:
