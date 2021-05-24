@@ -1,0 +1,2 @@
+global-include *.pdf
+#include src/docs/*.pdf
