@@ -3,7 +3,7 @@
 
 The **TFMini-Plus** is largely compatible with the **TFMini-S** and the **TF-Luna**, which are also able to use this module.  One difference is that upon command to change communication mode (`SET_I2C_MODE`, `SET_SERIAL_MODE`) the **TFMini-Plus** switches immediately, whereas the **TFMini-S** requires an additional `SAVE_SETTING` command.  This module is *not compatible* with the **TFMini**, which is an entirely different product with its own command set and data structure.
 
-With hardware v1.3.5 and firmware v1.9.0 and above, the TFMini-Plus communication interface can be configured to use either the default **UART** (serial) or the **I2C** (two-wire) protocol.  Additionally, the device can be configured to output a binary (high/low) voltage level to signal that a detected object is within or beyond a user-defined range.  Please see trhe comments below and the manufacturer's Product Manual for more information about the **I/O** output mode.
+With hardware v1.3.5 and firmware v1.9.0 and above, the TFMini-Plus communication interface can be configured to use either the default **UART** (serial) or the **I2C** (two-wire) protocol.  Additionally, the device can be configured to output a binary (high/low) voltage level to signal that a detected object is within or beyond a user-defined range.  Please see the comments below and the manufacturer's Product Manual for more information about the **I/O** output mode.
 
 The UART serial baud-rate is user-programmable, but only the following rates are supported:<br />
 9600, 14400, 19200, 56000, 115200, 460800, and 921600.
