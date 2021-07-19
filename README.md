@@ -1,5 +1,5 @@
 # tfmplus
-### Python module for the Benewake TFMini-Plus LiDAR sensor in serial communication mode
+### Python module for the TFMini-Plus, TFMini-S and TFLuna in serial (UART) communications mode.
 
 The **TFMini-Plus** is largely compatible with the **TFMini-S** and the **TF-Luna**, which are also able to use this module.  One difference is that upon command to change communication mode (`SET_I2C_MODE`, `SET_SERIAL_MODE`) the **TFMini-Plus** switches immediately, whereas the **TFMini-S** requires an additional `SAVE_SETTING` command.  This module is *not compatible* with the **TFMini**, which is an entirely different product with its own command set and data structure.
 
