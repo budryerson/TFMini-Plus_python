@@ -39,9 +39,7 @@ Benewake is not forthcoming about the internals of the device, however they did 
 Also included:
 <br />&nbsp;&nbsp;&#9679;&nbsp; A python script 'tfmp_test.py' is in `tests`.
 <br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Data-sheet and Product Manual are in `docs`.
-<br />&nbsp;&nbsp;&#9679;&nbsp; Valuable information regarding Time of Flight distance sensing in general and the Texas Instruments OPT3101 module in particular are also in `docs`.
 
-Installed with the module is a `tests` folder that contains an example python script, `tfmp_test.py`.
 All of the code for this module and the test script is richly commented to assist with understanding and in problem solving.
 
 ### Using the I2C version of the device
