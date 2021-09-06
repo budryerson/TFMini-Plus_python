@@ -5,8 +5,12 @@
  #            The TFMini-Plus is a unique product. TFMini-Plus
  #            packages are not compatible with the TFMini.
  # Developer: Bud Ryerson
- # Version:   0.0.18
- # Last work: 21 MAY 2021
+ # v0.0.18 - 21 MAY 2021
+ # v0.1.0  - 06 SEP 2021 - Corrected (reversed) Enable/Disable commands.
+             Changed three command names
+               OBTAIN_FIRMWARE_VERSION is now GET_FIRMWARE_VERSION
+               RESTORE_FACTORY_SETTINGS is now HARD_RESET
+               SYSTEM_RESET is now SOFT_RESET
  #
  # Default settings for the TFMini-Plus are a 115200 serial baud rate
  # and a 100Hz measurement frame rate. The device will begin returning
@@ -186,11 +190,11 @@ def getData():
 #  0x     00       00       00       00
 #      one byte  command  command   reply
 #      payload   number   length    length
-OBTAIN_FIRMWARE_VERSION   = 0x00010407   # returns 3 byte firmware version
+GET_FIRMWARE_VERSION      = 0x00010407   # returns 3 byte firmware version
 TRIGGER_DETECTION         = 0x00040400   # frame rate must be set to zero
                                          # returns a 9 byte data frame
-SYSTEM_RESET              = 0x00020405   # returns a 1 byte pass/fail (0/1)
-RESTORE_FACTORY_SETTINGS  = 0x00100405   #           "
+SOFT_RESET                = 0x00020405   # returns a 1 byte pass/fail (0/1)
+HARD_RESET                = 0x00100405   #           "
 SAVE_SETTINGS             = 0x00110405   # This must follow every command
                                          # that modifies volatile parameters.
                                          # Returns a 1 byte pass/fail (0/1)
@@ -200,8 +204,8 @@ SET_BAUD_RATE             = 0x00060808   # an echo of the command
 STANDARD_FORMAT_CM        = 0x01050505   #           "
 PIXHAWK_FORMAT            = 0x02050505   #           "
 STANDARD_FORMAT_MM        = 0x06050505   #           "
-ENABLE_OUTPUT             = 0x00070505   #           "
-DISABLE_OUTPUT            = 0x01070505   #           "
+ENABLE_OUTPUT             = 0x01070505   #           "
+DISABLE_OUTPUT            = 0x00070505   #           "
 SET_I2C_ADDRESS           = 0x100B0505   #           "
 
 SET_SERIAL_MODE           = 0x000A0500   # default is Serial (UART)
@@ -250,9 +254,9 @@ def sendCommand( cmnd, param):
     cmndLen = cmndData[ 1]         #  Save the second byte as command length.
     cmndData[ 0] = 0x5A            #  Set the first byte to HEADER code.
 
-    if( cmnd == SET_FRAME_RATE):    #  If the command is Set FrameRate...
+    if( cmnd == SET_FRAME_RATE):                                     #  If the command is Set FrameRate...
         cmndData[3:2] = param.to_bytes( 2, byteorder = 'little')     #  add the 2 byte FrameRate parameter.
-    elif( cmnd == SET_BAUD_RATE):   #  If the command is Set BaudRate...
+    elif( cmnd == SET_BAUD_RATE):                                    #  If the command is Set BaudRate...
         cmndData[3:3] = param.to_bytes( 3, byteorder = 'little')     #  add the 3 byte BaudRate parameter.
 
     cmndData = cmndData[0:cmndLen]  # re-establish command data length
@@ -321,13 +325,13 @@ def sendCommand( cmnd, param):
     #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     #  Step 5 - Interpret different command responses.
     #  - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if( cmnd == OBTAIN_FIRMWARE_VERSION):
+    if( cmnd == GET_FIRMWARE_VERSION):
         version[ 0] = reply[ 5]  #  set firmware version.
         version[ 1] = reply[ 4]
         version[ 2] = reply[ 3]
     else:
-        if( cmnd == SYSTEM_RESET or
-            cmnd == RESTORE_FACTORY_SETTINGS or
+        if( cmnd == SOFT_RESET or
+            cmnd == HARD_RESET or
             cmnd == SAVE_SETTINGS ):
             if( reply[ 3] == 1):    #  If PASS/FAIL byte non-zero...
                 status = TFMP_FAIL  #  then set status to 'FAIL'...
@@ -388,8 +392,8 @@ def printReply():
     print()
 
 #  Definitions that need to be exported
-__all__ = ['OBTAIN_FIRMWARE_VERSION', 'TRIGGER_DETECTION', 'SYSTEM_RESET',
-           'RESTORE_FACTORY_SETTINGS', 'SAVE_SETTINGS', 'SET_FRAME_RATE',
+__all__ = ['GET_FIRMWARE_VERSION', 'TRIGGER_DETECTION', 'SOFT_RESET',
+           'HARD_RESET', 'SAVE_SETTINGS', 'SET_FRAME_RATE',
            'SET_BAUD_RATE', 'STANDARD_FORMAT_CM', 'PIXHAWK_FORMAT',
            'STANDARD_FORMAT_MM', 'ENABLE_OUTPUT', 'DISABLE_OUTPUT',
            'SET_I2C_ADDRESS', 'SET_SERIAL_MODE', 'SET_I2C_MODE',
