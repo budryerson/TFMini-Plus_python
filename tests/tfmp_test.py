@@ -2,9 +2,13 @@
 # File Name: tfmp_test.py
 # Inception: 14 MAR 2021
 # Developer: Bud Ryerson
-# Version:   0.0.18
-# Last work: 21 MAY 2021
-
+ # v0.0.18 - 21 MAY 2021
+ # v0.1.0  - 06 SEP 2021 - Corrected (reversed) Enable/Disable commands.
+             Changed three command names
+               OBTAIN_FIRMWARE_VERSION is now GET_FIRMWARE_VERSION
+               RESTORE_FACTORY_SETTINGS is now HARD_RESET
+               SYSTEM_RESET is now SOFT_RESET
+#
 # Description: A Python script for the Raspberry Pi to test the
 # Benewake TFMini Plus time-of-flight Lidar ranging sensor in
 # Serial (UART) mode using the 'tfmplus' module in development.
@@ -30,11 +34,11 @@
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'''
 
 # Skip a line and say 'Hello!'
-print( "\n\rTFMPlus Module Example - 21MAY2021")
+print( "\n\rTFMPlus Module Example - 06SEP2021")
 
 import time
 import sys
-import tfmplus as tfmP   # Import the `tfmplus` module v0.0.18
+import tfmplus as tfmP   # Import the `tfmplus` module v0.1.0
 from tfmplus import *    # and command and paramter defintions
 
 serialPort = "/dev/serial0"  # Raspberry Pi normal serial port
@@ -49,8 +53,8 @@ else:
     sys.exit()   #  quit the program if serial not ready
 
 # - - Perform a system reset - - - - - - - -
-print( "System reset: ", end= '')
-if( tfmP.sendCommand( SYSTEM_RESET, 0)):
+print( "Soft reset: ", end= '')
+if( tfmP.sendCommand( SOFT_RESET, 0)):
     print( "passed.")
 else:
     tfmP.printReply()
@@ -59,7 +63,7 @@ time.sleep(0.5)  # allow 500ms for reset to complete
 
 # - - Get and Display the firmware version - - - - - - -
 print( "Firmware version: ", end= '')
-if( tfmP.sendCommand( OBTAIN_FIRMWARE_VERSION, 0)):
+if( tfmP.sendCommand( GET_FIRMWARE_VERSION, 0)):
     print( str( tfmP.version[ 0]) + '.', end= '') # print three numbers
     print( str( tfmP.version[ 1]) + '.', end= '') # separated by a dot
     print( str( tfmP.version[ 2]))
