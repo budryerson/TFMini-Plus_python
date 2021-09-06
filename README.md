@@ -1,4 +1,14 @@
 # tfmplus
+### PLEASE NOTE:
+
+**v0.1.0** - This version reverses and corrects the `ENABLE_OUTPUT` and `DISABLE_OUTPUT` commands.<br />
+
+Also, three commands names are changed in this version:
+<br />&nbsp;&nbsp;&#9679;&nbsp;`OBTAIN_FIRMWARE_VERSION`  is now `GET_FIRMWARE_VERSION`
+<br />&nbsp;&nbsp;&#9679;&nbsp;`RESTORE_FACTORY_SETTINGS` is now `HARD_RESET`
+<br />&nbsp;&nbsp;&#9679;&nbsp;`SYSTEM_RESET`             is now `SOFT_RESET`<br />
+<hr />
+
 ### Python module for the TFMini-Plus, TFMini-S and TFLuna in serial (UART) communications mode.
 
 The **TFMini-Plus** is largely compatible with the **TFMini-S** and the **TF-Luna**, which are also able to use this module.  One difference is that upon command to change communication mode (`SET_I2C_MODE`, `SET_SERIAL_MODE`) the **TFMini-Plus** switches immediately, whereas the **TFMini-S** requires an additional `SAVE_SETTING` command.  This module is *not compatible* with the **TFMini**, which is an entirely different product with its own command set and data structure.
@@ -41,6 +51,7 @@ Also included:
 <br />&nbsp;&nbsp;&#9679;&nbsp; Recent copies of the manufacturer's Data-sheet and Product Manual are in `docs`.
 
 All of the code for this module and the test script is richly commented to assist with understanding and in problem solving.
+<hr />
 
 ### Using the I2C version of the device
 According to Benewake:
